@@ -43,3 +43,8 @@ a {
 .container {
   width: var(--max-width);
 }
+
+// mobile view 
+.mobile-view-container {
+
+}
