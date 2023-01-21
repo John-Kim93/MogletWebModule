@@ -1,0 +1,49 @@
+.userInfoContainer {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 50px 1fr;
+  grid-template-rows: 20px 20px;
+}
+
+.item:nth-child(1) {
+  grid-column: 1 / 2;
+	grid-row: 1 / span 2;
+}
+
+.item:nth-child(2) {
+  grid-column: 2 / 2;
+  grid-row: 1 / 2
+}
+
+.item:nth-child(3) {
+  grid-column: 2 / 2;
+  grid-row: 2 / 2
+}
+
+.nickname {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  color: #202020;
+}
+
+.postInfo {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  color: #8D8D8D;
+}
+
+.content {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  color: #202020;
+}
+
+.videoContainer {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  height: 349px;
+}
