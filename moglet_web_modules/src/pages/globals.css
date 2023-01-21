@@ -21,12 +21,9 @@
 
 html,
 body {
-  width: var(--max-width);
+  font-family: 'Spoqa Han Sans Neo';
+  display: blcok;
   /* overflow-x: hidden; */
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
 }
 
 a {
@@ -40,6 +37,19 @@ a {
   }
 }
 
-.container {
-  width: var(--max-width);
+/* mobile view setting */ 
+.mobile-view-wrapper {
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start; /* 이거 빼면 늘어남 */
+}
+.mobile-view-container {
+  
+}
+
+.circleImage {
+  border-radius: 100px;
+  overflow: hidden;
 }

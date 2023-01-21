@@ -1,0 +1,28 @@
+.badgeContainer {
+  padding: 6px;
+
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  text-align: center;
+  text-decoration: none;
+
+  display: inline-block;
+  width: auto;
+
+  border: none;
+  border-radius: 10px;
+}
+
+.satiBadgeColor1 {
+  background-color: #FFDFDE;
+  color: #F04441;
+}
+.satiBadgeColor2 {
+  background-color: #B3EFE4;
+  color: #08B092;
+}
+.satiBadgeColor3 {
+  background-color: #C7C7C7;
+  color: #FFF;
+}
