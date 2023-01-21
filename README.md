@@ -2,6 +2,9 @@
 
 ### 1. 리뷰 영상 웹링크 모듈
 - 만족도 : visit_satisfaction
+  - 1 : 만족해요
+  - 2 : 보통이에요
+  - 3 : 아쉬워요
 
 - 프로필 이미지 : profile_filename(.jpg)
 - 유저이름 : nickname
@@ -11,6 +14,7 @@
 - 내용 : short_content
 
 - 영상 : filename(.m3u8)
+- 썸네일 : video_thumbnail(jpg)
 
 - 가게 이미지 : shop_filename(.jpeg)
 - 가게이름 : name
