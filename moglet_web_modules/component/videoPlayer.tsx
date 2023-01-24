@@ -13,16 +13,9 @@ export default function VideoPlayer({ videoUrl, thumbnailUrl } :Props) {
   const videoRef = useRef(null)
 
   useEffect(() => {
-    const video = videoRef.current
+    const video: HTMLElement | null = videoRef?.current
     if (!video) return
-
-    video.controls = true
-    // const defaultOptions={}
-    if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      // This will run in safari, where HLS is supported natively
-      video.src = src
-    } else if (Hls.isSupported()) {
-      // This will run in all other modern browsers
+    if (Hls.isSupported()) {
       const hls = new Hls()
       hls.loadSource(src)
       const player = new Player(video);
