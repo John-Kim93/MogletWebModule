@@ -5,6 +5,7 @@ import { GetServerSideProps } from 'next';
 import { Satisfaction_1, Satisfaction_2, Satisfaction_3 } from 'component/badge/satisfactionBadge';
 import style from "./review.module.css"
 import VideoPlayer from "component/videoPlayer";
+import { RestaurantLinkBtn } from "component/button/restaurantLink";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { query } = context;
@@ -56,10 +57,16 @@ export default function WebReview(props :Props) {
             {review?.address_place_name}
           </div>
         </div>
-        <p className={style.content}>{review?.short_content}</p>
+        <div className={style.content}>{review?.short_content}</div>
         <div className={style.videoContainer}>
           <VideoPlayer videoUrl={review?.filename} thumbnailUrl={review?.video_thumbnail}/>
         </div>
+        <RestaurantLinkBtn
+          imgSrc={review?.shop_filename}
+          storeName={review?.name}
+          storeAddress={review?.address_place_name}
+        />
+
       </div>
     </>
   )
