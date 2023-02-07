@@ -1,7 +1,7 @@
 .container {
   display: grid;
   width: 100%; height: 61px;
-  grid-template-columns: 71px 1fr 51px;
+  grid-template-columns: 71px 1fr 36px;
   grid-template-rows: 1fr 1fr;
   background-color: #F7F7F7;
   border-radius: 8px;

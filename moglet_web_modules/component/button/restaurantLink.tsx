@@ -1,11 +1,13 @@
 import style from "../../style/component/button/button.module.css"
 import Image from "next/image"
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 interface Props {
   imgSrc: string,
   storeName: string,
   storeAddress: string,
+  naverLink: string,
 }
 
 export function RestaurantLinkBtn(props:Props) {
@@ -27,7 +29,8 @@ export function RestaurantLinkBtn(props:Props) {
   }, []);
 
   return (
-    <div
+    <Link
+      href={props?.naverLink}
       className={style.container}
     >
       <div
@@ -49,9 +52,8 @@ export function RestaurantLinkBtn(props:Props) {
         {props?.storeAddress}
       </div>
       <div className={style.item}>
-        {'>'}
+        <Image src="/chevron-small-down.png" alt="arrow" width={20} height={20} />
       </div>
-      
-    </div>
+    </Link>
   )
 }
