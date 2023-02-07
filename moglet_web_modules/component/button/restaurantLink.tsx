@@ -11,7 +11,6 @@ interface Props {
 }
 
 export function RestaurantLinkBtn(props:Props) {
-  const storeImg = `/original/${props?.imgSrc}`
   const [width, setWidth] = useState(0)
 
   useEffect(() => {
@@ -37,7 +36,7 @@ export function RestaurantLinkBtn(props:Props) {
         style={{ borderRadius: '8px', overflow: 'hidden' }}
       >
         <Image
-          src={storeImg}
+          src={props?.imgSrc}
           alt="가게이미지"
           width={width}
           height={width}

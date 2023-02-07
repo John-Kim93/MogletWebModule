@@ -25,7 +25,11 @@ interface Props {
 export default function WebReview(props :Props) {
   const reviewObj = useQuery(['get_review'], () => apiGetReview(props.uid))
   const review = reviewObj?.data?.data?.item
-  const naverLink: string={} = review?.naver_map_place_id
+
+  const imageSrc: string = review?.shop_filename.includes("Thumbnail")
+  ? `/convert/${review?.shop_filename}`
+  : `/original/${review?.shop_filename}`
+  const naverLink: string = review?.naver_map_place_id
   ? `https://m.place.naver.com/place/${review?.naver_map_place_id}`
   : `https://m.map.naver.com/search2/search.naver?query=${review?.name}&sm=hty&style=v5#/map`
   const userProfile = `/original/${review?.profile_filename}`
@@ -64,7 +68,7 @@ export default function WebReview(props :Props) {
           <VideoPlayer videoUrl={review?.filename} thumbnailUrl={review?.video_thumbnail}/>
         </div>
         <RestaurantLinkBtn
-          imgSrc={review?.shop_filename}
+          imgSrc={imageSrc}
           storeName={review?.name}
           storeAddress={review?.address_place_name}
           naverLink={naverLink}
