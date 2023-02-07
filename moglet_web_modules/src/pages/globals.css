@@ -44,10 +44,8 @@ a {
   justify-content: center;
   align-items: flex-start; /* 이거 빼면 늘어남 */
   max-width: 500px;
-  margin: 1rem 1rem;
-}
-.mobile-view-container {
-  
+  margin: 1rem auto;
+  padding: 0 1rem;
 }
 
 .circleImage {
