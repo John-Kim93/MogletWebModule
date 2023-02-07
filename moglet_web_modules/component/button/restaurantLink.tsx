@@ -17,14 +17,12 @@ export function RestaurantLinkBtn(props:Props) {
   useEffect(() => {
     const handleResize = () => {
       const parentDiv = document.getElementById('parentDiv');
-      console.log(parentDiv)
       if (parentDiv) {
         setWidth(parentDiv.offsetWidth);
       }
     };
     handleResize();
     window.addEventListener('resize', handleResize);
-    console.log(width)
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
