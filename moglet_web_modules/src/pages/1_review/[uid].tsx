@@ -26,6 +26,9 @@ export default function WebReview(props :Props) {
   const reviewObj = useQuery(['get_review'], () => apiGetReview(props.uid))
   const review = reviewObj?.data?.data?.item
   console.log(review)
+  const naverLink: string={} = review?.naver_map_place_id
+  ? `https://m.place.naver.com/place/${review?.naver_map_place_id}`
+  : `https://m.map.naver.com/search2/search.naver?query=${review?.name}&sm=hty&style=v5#/map`
   const userProfile = `/original/${review?.profile_filename}`
   const satisfactionBadge = () => {
     switch (review?.visit_satisfaction){
@@ -65,8 +68,8 @@ export default function WebReview(props :Props) {
           imgSrc={review?.shop_filename}
           storeName={review?.name}
           storeAddress={review?.address_place_name}
+          naverLink={naverLink}
         />
-
       </div>
     </>
   )
