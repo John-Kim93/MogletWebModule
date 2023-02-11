@@ -16,6 +16,7 @@ export default function App({ Component, pageProps} :AppProps ) {
         cacheTime: 2 * 60 * 60 * 1000,
       },
     }
+
   }))
 
   return (

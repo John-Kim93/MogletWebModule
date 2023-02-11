@@ -1,4 +1,4 @@
-import Image from "next/image"
+// import Image from "next/image"
 import { apiGetReview } from '@/serverApi/1_review/api'
 import { useQuery } from "react-query";
 import { GetServerSideProps } from 'next';
@@ -48,13 +48,11 @@ export default function WebReview(props :Props) {
         {satisfactionBadge()}
         <div className={style.userInfoContainer}>
           <div className={style.item}>
-            <Image
+            <img
               className="circleImage"
               src={userProfile}
-              width={41}
-              height={41}
               alt="유저 이미지"
-            ></Image>
+            ></img>
           </div>
           <div className={[style.item, style.nickname].join(" ")}>
             {review?.nickname}
