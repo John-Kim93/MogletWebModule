@@ -13,15 +13,15 @@ export default function VideoPlayer({ videoUrl, thumbnailUrl } :Props) {
   const videoRef = useRef(null)
 
   function checkMobile(){
- 
-    var varUA = navigator?.userAgent?.toLowerCase(); //userAgent 값 얻기
- 
-    if ( varUA.indexOf('android') > -1) {
-      return "android";
-    } else if ( varUA.indexOf("iphone") > -1||varUA.indexOf("ipad") > -1||varUA.indexOf("ipod") > -1 ) {
-      return "ios";
-    } else {
-      return "other";
+    if (typeof window !== 'undefined') {
+      var varUA = window.navigator.userAgent.toLowerCase(); //userAgent 값 얻기
+      if ( varUA.indexOf('android') > -1) {
+        return "android";
+      } else if ( varUA.indexOf("iphone") > -1||varUA.indexOf("ipad") > -1||varUA.indexOf("ipod") > -1 ) {
+        return "ios";
+      } else {
+        return "other";
+      }
     }
   }
 
@@ -45,23 +45,23 @@ export default function VideoPlayer({ videoUrl, thumbnailUrl } :Props) {
     }
   }, [src, videoRef])
 
-  // switch(checkMobile()) {
-  //   case "ios":
-  //     return (
-  //       <>
-  //         <video src={src} crossOrigin="anonymous" />
-  //       </>
-  //     )
-  //   default:
-  //     return (
-  //       <>
-  //         <video ref={videoRef} crossOrigin="anonymous" />
-  //       </>
-  //     )
-  // }
-  return (
-    <>
-      <video ref={videoRef} crossOrigin="anonymous" />
-    </>
-  )
+  switch(checkMobile()) {
+    case "ios":
+      return (
+        <>
+          <video src={src} crossOrigin="anonymous" />
+        </>
+      )
+    default:
+      return (
+        <>
+          <video ref={videoRef} crossOrigin="anonymous" />
+        </>
+      )
+  }
+  // return (
+  //   <>
+  //     <video ref={videoRef} crossOrigin="anonymous" />
+  //   </>
+  // )
 }
