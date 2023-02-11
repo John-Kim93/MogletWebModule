@@ -31,7 +31,7 @@ export function RestaurantLinkBtn(props:Props) {
       className={style.container}
     >
       <div
-        id="imgParentDiv"
+        // id="imgParentDiv"
         className={style.item}
         style={{ borderRadius: '8px', overflow: 'hidden' }}
       >
