@@ -1,6 +1,6 @@
 import style from "../../style/component/button/button.module.css"
 import Image from "next/image"
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import Link from "next/link";
 
 interface Props {
@@ -11,19 +11,19 @@ interface Props {
 }
 
 export function RestaurantLinkBtn(props:Props) {
-  const [width, setWidth] = useState(0)
+  // const [width, setWidth] = useState(0)
 
-  useEffect(() => {
-    const handleResize = () => {
-      const parentDiv = document.getElementById('parentDiv');
-      if (parentDiv) {
-        setWidth(parentDiv.offsetWidth);
-      }
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     const parentDiv = document.getElementById('parentDiv');
+  //     if (parentDiv) {
+  //       setWidth(parentDiv.offsetWidth);
+  //     }
+  //   };
+  //   handleResize();
+  //   window.addEventListener('resize', handleResize);
+  //   return () => window.removeEventListener('resize', handleResize);
+  // }, []);
 
   return (
     <Link
@@ -31,15 +31,13 @@ export function RestaurantLinkBtn(props:Props) {
       className={style.container}
     >
       <div
-        id="parentDiv"
+        id="imgParentDiv"
         className={style.item}
         style={{ borderRadius: '8px', overflow: 'hidden' }}
       >
-        <Image
+        <img
           src={props?.imgSrc}
           alt="가게이미지"
-          width={width}
-          height={width}
         />
       </div>
       <div className={style.item}>
