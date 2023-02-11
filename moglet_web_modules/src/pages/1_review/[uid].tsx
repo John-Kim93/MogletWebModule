@@ -55,7 +55,6 @@ export default function WebReview(props :Props) {
         <div className={style.userInfoContainer}>
           <div className={style.item}>
             <img
-              className="circleImage"
               src={userProfile}
               alt="유저 이미지"
             ></img>
