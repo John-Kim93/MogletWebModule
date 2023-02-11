@@ -12,6 +12,20 @@ export default function VideoPlayer({ videoUrl, thumbnailUrl } :Props) {
   const src = `/convert/${videoUrl}`
   const videoRef = useRef(null)
 
+  function checkMobile(){
+ 
+    var varUA = navigator?.userAgent?.toLowerCase(); //userAgent 값 얻기
+ 
+    if ( varUA.indexOf('android') > -1) {
+      return "android";
+    } else if ( varUA.indexOf("iphone") > -1||varUA.indexOf("ipad") > -1||varUA.indexOf("ipod") > -1 ) {
+      return "ios";
+    } else {
+      return "other";
+    }
+  }
+
+
   useEffect(() => {
     const video: HTMLElement | null = videoRef?.current
     if (!video) return
@@ -31,9 +45,18 @@ export default function VideoPlayer({ videoUrl, thumbnailUrl } :Props) {
     }
   }, [src, videoRef])
 
-  return (
-    <>
-      <video ref={videoRef} crossOrigin="anonymous" />
-    </>
-  )
+  switch(checkMobile()) {
+    case "ios":
+      return (
+        <>
+          <video src={src} crossOrigin="anonymous" />
+        </>
+      )
+    default:
+      return (
+        <>
+          <video ref={videoRef} crossOrigin="anonymous" />
+        </>
+      )
+  }
 }
