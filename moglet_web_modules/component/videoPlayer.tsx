@@ -45,18 +45,23 @@ export default function VideoPlayer({ videoUrl, thumbnailUrl } :Props) {
     }
   }, [src, videoRef])
 
-  switch(checkMobile()) {
-    case "ios":
-      return (
-        <>
-          <video src={src} crossOrigin="anonymous" />
-        </>
-      )
-    default:
-      return (
-        <>
-          <video ref={videoRef} crossOrigin="anonymous" />
-        </>
-      )
-  }
+  // switch(checkMobile()) {
+  //   case "ios":
+  //     return (
+  //       <>
+  //         <video src={src} crossOrigin="anonymous" />
+  //       </>
+  //     )
+  //   default:
+  //     return (
+  //       <>
+  //         <video ref={videoRef} crossOrigin="anonymous" />
+  //       </>
+  //     )
+  // }
+  return (
+    <>
+      <video ref={videoRef} crossOrigin="anonymous" />
+    </>
+  )
 }
