@@ -40,6 +40,7 @@ a {
 /* mobile view setting */ 
 .mobile-view-wrapper {
   display: flex;
+  background-color: white;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start; /* 이거 빼면 늘어남 */
