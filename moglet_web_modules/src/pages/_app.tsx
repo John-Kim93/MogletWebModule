@@ -6,6 +6,7 @@ import {
 // import { ReactQueryDevtools } from "react-query/devtools";
 import './globals.css'
 import React from "react"
+import { ThemeProvider, ColorModeProvider } from "@chakra-ui/react"
 
 export default function App({ Component, pageProps} :AppProps ) {
   // Create a react query client
@@ -20,8 +21,10 @@ export default function App({ Component, pageProps} :AppProps ) {
   }))
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Component {...pageProps} />
-    </QueryClientProvider>
+    <ColorModeProvider>
+      <QueryClientProvider client={queryClient}>
+        <Component {...pageProps} />
+      </QueryClientProvider>
+    </ColorModeProvider>
   );
 }

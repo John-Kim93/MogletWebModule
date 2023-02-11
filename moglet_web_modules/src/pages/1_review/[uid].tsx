@@ -6,6 +6,7 @@ import { Satisfaction_1, Satisfaction_2, Satisfaction_3 } from 'component/badge/
 import style from "./review.module.css"
 import VideoPlayer from "component/videoPlayer";
 import { RestaurantLinkBtn } from "component/button/restaurantLink";
+import { useColorMode } from "@chakra-ui/react";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { query } = context;
@@ -23,6 +24,11 @@ interface Props {
 }
 
 export default function WebReview(props :Props) {
+  const { colorMode, toggleColorMode } = useColorMode();
+  if (colorMode === 'dark') {
+    toggleColorMode()
+  }
+
   const reviewObj = useQuery(['get_review'], () => apiGetReview(props.uid))
   const review = reviewObj?.data?.data?.item
 
