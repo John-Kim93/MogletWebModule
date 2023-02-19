@@ -9,6 +9,13 @@ interface VideoPlayerProps {
 export default function VideoPlayer(props: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
 
+  const handleEnded = () => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0
+      // videoRef.current.play()
+    }
+  }
+  
   const handleTouchStart = () => {
     if (videoRef.current) {
       if (videoRef.current.paused) {
@@ -37,6 +44,7 @@ export default function VideoPlayer(props: VideoPlayerProps) {
       style={{ height: '50vh' } as React.CSSProperties}
       ref={videoRef}
       controls
+      onEnded={handleEnded}
       onTouchStart={handleTouchStart}
     />
   );
