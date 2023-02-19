@@ -11,7 +11,7 @@ import { useColorMode } from "@chakra-ui/react";
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { query } = context;
   const { uid } = query;
-  const ret = typeof uid === "string" ? parseInt(uid) : 11
+  const ret = typeof uid === "string" ? parseInt(uid) : 100
   return {
     props: {
       uid : ret
@@ -28,10 +28,12 @@ export default function WebReview(props :Props) {
   if (colorMode === 'dark') {
     toggleColorMode()
   }
-
   const reviewObj = useQuery(['get_review'], () => apiGetReview(props.uid))
   const review = reviewObj?.data?.data?.item
-
+  // change .m3u8 format to .mp4
+  // const videoUrl = `/original/${review?.filename.replace("ConvertSuccess.m3u8", ".mp4")}`
+  const videoUrl:string = review?.filename 
+  // const videoUrl = review?.filename
   const imageSrc: string = review?.shop_filename.includes("Thumbnail")
   ? `/convert/${review?.shop_filename}`
   : `/original/${review?.shop_filename}`
@@ -68,7 +70,7 @@ export default function WebReview(props :Props) {
         </div>
         <div className={style.content}>{review?.short_content}</div>
         <div className={style.videoContainer}>
-          <VideoPlayer videoUrl={review?.filename} thumbnailUrl={review?.video_thumbnail}/>
+          <VideoPlayer videoUrl={videoUrl} />
         </div>
         <RestaurantLinkBtn
           imgSrc={imageSrc}

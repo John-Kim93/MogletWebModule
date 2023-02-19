@@ -1,67 +1,43 @@
-import { useEffect, useRef } from 'react'
-import Hls from 'hls.js'
-import Player from 'plyr'
-import 'plyr/dist/plyr.css'
+import Hls from 'hls.js';
+import React, { useRef, useEffect } from 'react'
 
-interface Props {
-  videoUrl: String,
-  thumbnailUrl: String,
+interface VideoPlayerProps {
+  videoUrl: string;
+  // thumbnailImg: string;
 }
 
-export default function VideoPlayer({ videoUrl, thumbnailUrl } :Props) {
-  const src = `/convert/${videoUrl}`
-  const videoRef = useRef(null)
+export default function VideoPlayer(props: VideoPlayerProps) {
+  const videoRef = useRef<HTMLVideoElement>(null)
 
-  function checkMobile(){
-    if (typeof window !== 'undefined') {
-      var varUA = window.navigator.userAgent.toLowerCase(); //userAgent 값 얻기
-      if ( varUA.indexOf('android') > -1) {
-        return "android";
-      } else if ( varUA.indexOf("iphone") > -1||varUA.indexOf("ipad") > -1||varUA.indexOf("ipod") > -1 ) {
-        return "ios";
+  const handleTouchStart = () => {
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play()
       } else {
-        return "other";
+        videoRef.current.pause()
       }
     }
   }
-
 
   useEffect(() => {
-    const video: HTMLElement | null = videoRef?.current
-    if (!video) return
-    if (Hls.isSupported()) {
-      const hls = new Hls()
-      hls.loadSource(src)
-      const player = new Player(video);
-      player.source = {
-        type: 'video',
-        sources: [],
+    const video = videoRef.current
+    if (video && props.videoUrl) {
+      if (Hls.isSupported()) {
+        const hls = new Hls()
+        hls.loadSource(`/convert/${props.videoUrl}`)
+        hls.attachMedia(video)
+      } else if (videoRef.current.canPlayType('application/vnd.apple.mpegurl')) {
+        videoRef.current.src = `/convert/${props.videoUrl}`
       }
-      hls.attachMedia(video)
-    } else {
-      console.error(
-        'This is an old browser that does not support MSE https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API'
-      )
     }
-  }, [src, videoRef])
+  }, [props.videoUrl]);
 
-  switch(checkMobile()) {
-    case "ios":
-      return (
-        <>
-          <video src={src} crossOrigin="anonymous" />
-        </>
-      )
-    default:
-      return (
-        <>
-          <video ref={videoRef} crossOrigin="anonymous" />
-        </>
-      )
-  }
-  // return (
-  //   <>
-  //     <video ref={videoRef} crossOrigin="anonymous" />
-  //   </>
-  // )
+  return (
+    <video 
+      style={{ height: '50vh' } as React.CSSProperties}
+      ref={videoRef}
+      controls
+      onTouchStart={handleTouchStart}
+    />
+  );
 }

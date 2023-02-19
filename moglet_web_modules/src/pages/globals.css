@@ -31,6 +31,10 @@ a {
   text-decoration: none;
 }
 
+video {
+  width: 100%;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
@@ -53,3 +57,4 @@ a {
   border-radius: 100px;
   overflow: hidden;
 }
+
