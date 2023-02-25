@@ -56,5 +56,7 @@
 .videoContainer {
   width: 100%;
   margin-bottom: 12px;
-  background-color: #000
+  display: flex;
+  justify-content: center;
+  /* background-color: #000 */
 }
