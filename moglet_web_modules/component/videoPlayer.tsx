@@ -41,7 +41,7 @@ export default function VideoPlayer(props: VideoPlayerProps) {
 
   return (
     <video 
-      style={{ height: '50vh' } as React.CSSProperties}
+      style={{ width: '80%', height: 'auto' } as React.CSSProperties}
       ref={videoRef}
       controls
       onEnded={handleEnded}

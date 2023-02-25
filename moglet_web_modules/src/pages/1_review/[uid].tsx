@@ -30,10 +30,7 @@ export default function WebReview(props :Props) {
   }
   const reviewObj = useQuery(['get_review'], () => apiGetReview(props.uid))
   const review = reviewObj?.data?.data?.item
-  // change .m3u8 format to .mp4
-  // const videoUrl = `/original/${review?.filename.replace("ConvertSuccess.m3u8", ".mp4")}`
   const videoUrl:string = review?.filename 
-  // const videoUrl = review?.filename
   const imageSrc: string = review?.shop_filename.includes("Thumbnail")
   ? `/convert/${review?.shop_filename}`
   : `/original/${review?.shop_filename}`
