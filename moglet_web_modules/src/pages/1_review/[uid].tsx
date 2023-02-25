@@ -31,6 +31,7 @@ export default function WebReview(props :Props) {
   const reviewObj = useQuery(['get_review'], () => apiGetReview(props.uid))
   const review = reviewObj?.data?.data?.item
   const videoUrl:string = review?.filename 
+  const thumbnailImg = `/convert/${review?.video_thumbnail}`
   const imageSrc: string = review?.shop_filename.includes("Thumbnail")
   ? `/convert/${review?.shop_filename}`
   : `/original/${review?.shop_filename}`
@@ -67,7 +68,7 @@ export default function WebReview(props :Props) {
         </div>
         <div className={style.content}>{review?.short_content}</div>
         <div className={style.videoContainer}>
-          <VideoPlayer videoUrl={videoUrl} />
+          <VideoPlayer videoUrl={videoUrl} thumbnailImg={thumbnailImg} />
         </div>
         <RestaurantLinkBtn
           imgSrc={imageSrc}

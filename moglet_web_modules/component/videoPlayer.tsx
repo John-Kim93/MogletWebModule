@@ -3,7 +3,7 @@ import React, { useRef, useEffect } from 'react'
 
 interface VideoPlayerProps {
   videoUrl: string;
-  // thumbnailImg: string;
+  thumbnailImg: string;
 }
 
 export default function VideoPlayer(props: VideoPlayerProps) {
@@ -41,11 +41,12 @@ export default function VideoPlayer(props: VideoPlayerProps) {
 
   return (
     <video 
-      style={{ width: '80%', height: 'auto' } as React.CSSProperties}
+      style={{ borderRadius: '15px', width: '80%', height: 'auto' } as React.CSSProperties}
       ref={videoRef}
       controls
       onEnded={handleEnded}
       onTouchStart={handleTouchStart}
+      poster={props.thumbnailImg}
     />
   );
 }
