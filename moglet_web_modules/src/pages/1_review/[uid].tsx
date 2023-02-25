@@ -7,6 +7,8 @@ import style from "./review.module.css"
 import VideoPlayer from "component/videoPlayer";
 import { RestaurantLinkBtn } from "component/button/restaurantLink";
 import { useColorMode } from "@chakra-ui/react";
+import TimeCalculatedText from 'repositories/timeCalculatedText';
+// import TruncatedText from 'component/text/truncatedText';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { query } = context;
@@ -30,7 +32,8 @@ export default function WebReview(props :Props) {
   }
   const reviewObj = useQuery(['get_review'], () => apiGetReview(props.uid))
   const review = reviewObj?.data?.data?.item
-  const videoUrl:string = review?.filename 
+  const createdTime = TimeCalculatedText(review?.created_time)
+  const videoUrl:string = review?.filename
   const thumbnailImg = `/convert/${review?.video_thumbnail}`
   const imageSrc: string = review?.shop_filename.includes("Thumbnail")
   ? `/convert/${review?.shop_filename}`
@@ -63,7 +66,7 @@ export default function WebReview(props :Props) {
             {review?.nickname}
           </div>
           <div className={[style.item, style.postInfo].join(" ")}>
-            {review?.address_place_name}
+            {createdTime} <div className={style.pointSeperator}></div> {review?.address_place_name}
           </div>
         </div>
         <div className={style.content}>{review?.short_content}</div>
