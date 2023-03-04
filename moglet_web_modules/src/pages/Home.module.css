@@ -1,0 +1,23 @@
+.mobileViewWrapper {
+  max-width: 500px;
+  margin: 1rem auto;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  background-color: #FAEBD7;
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
+}
+
+.mobileViewWrapper h2 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.mobileViewWrapper a {
+  text-decoration: none;
+  transition: color 0.5s ease-in-out;
+  color: #4b4e57;
+}
+
+.mobileViewWrapper a:hover {
+  color: #B22222;
+}

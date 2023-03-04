@@ -1,4 +1,5 @@
 import { AppProps } from 'next/app'
+import Head from 'next/head';
 import {
   QueryClient,
   QueryClientProvider,
@@ -23,6 +24,9 @@ export default function App({ Component, pageProps} :AppProps ) {
   return (
     <ColorModeProvider>
       <QueryClientProvider client={queryClient}>
+        <Head>
+          <title>Moglet Web Module</title>
+        </Head>
         <Component {...pageProps} />
       </QueryClientProvider>
     </ColorModeProvider>
