@@ -1,6 +1,5 @@
 import style from "../../style/component/button/button.module.css"
 import Image from "next/image"
-// import { useEffect, useState } from "react";
 import Link from "next/link";
 
 interface Props {
@@ -11,44 +10,32 @@ interface Props {
 }
 
 export function RestaurantLinkBtn(props:Props) {
-  // const [width, setWidth] = useState(0)
-
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     const parentDiv = document.getElementById('parentDiv');
-  //     if (parentDiv) {
-  //       setWidth(parentDiv.offsetWidth);
-  //     }
-  //   };
-  //   handleResize();
-  //   window.addEventListener('resize', handleResize);
-  //   return () => window.removeEventListener('resize', handleResize);
-  // }, []);
 
   return (
-    <Link
-      href={props?.naverLink}
-      className={style.container}
-    >
-      <div
-        // id="imgParentDiv"
-        className={style.item}
-        style={{ borderRadius: '8px', overflow: 'hidden' }}
+    <div className={style.wrapper}>
+      <Link
+        href={props?.naverLink}
+        className={style.container}
       >
-        <img
-          src={props?.imgSrc}
-          alt="가게이미지"
-        />
-      </div>
-      <div className={style.item}>
-        {props?.storeName}
-      </div>
-      <div className={style.item}>
-        {props?.storeAddress}
-      </div>
-      <div className={style.item}>
-        <Image src="/chevron-small-down.png" alt="arrow" width={20} height={20} />
-      </div>
-    </Link>
+        <div
+          className={style.item}
+          style={{ borderRadius: '8px', overflow: 'hidden' }}
+        >
+          <img
+            src={props?.imgSrc}
+            alt="가게이미지"
+          />
+        </div>
+        <div className={style.item}>
+          {props?.storeName}
+        </div>
+        <div className={style.item}>
+          {props?.storeAddress}
+        </div>
+        <div className={style.item}>
+          <Image src="/ArrowForLink.png" alt="arrow" width={5} height={10} />
+        </div>
+      </Link>
+    </div>
   )
 }
