@@ -50,7 +50,7 @@ export default function Post(props: Props) {
           {createdTime} <div className={style.pointSeperator}></div> {data?.address_place_name}
         </div>
       </div>
-      <Link href={`/1_review/${data.uid}`} >
+      <Link href={`/1_review/${data?.uid}`} >
         <TruncatedText
           text={data?.short_content}
           maxLength={100}
