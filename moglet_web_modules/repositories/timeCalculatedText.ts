@@ -1,4 +1,3 @@
-import style from '../../style/component/text/timeCalculatedText.module.css'
 import moment from 'moment';
 
 export default function TimeCalculatedText(dateTimeString:string) {

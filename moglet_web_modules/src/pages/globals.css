@@ -51,6 +51,7 @@ video {
   max-width: 500px;
   margin: 1rem auto;
   padding: 0 1rem;
+  margin-bottom: 3rem;
 }
 
 .circleImage {
