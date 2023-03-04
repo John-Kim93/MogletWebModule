@@ -1,8 +1,10 @@
+import Link from 'next/link'
 import { Satisfaction_1, Satisfaction_2, Satisfaction_3 } from "component/badge/satisfactionBadge"
 import { RestaurantLinkBtn } from "component/button/restaurantLink"
 import VideoPlayer from "component/videoPlayer"
 import TimeCalculatedText from "repositories/timeCalculatedText"
 import style from "./post.module.css"
+import TruncatedText from 'component/text/truncatedText'
 import { Review } from "types/types"
 import { LazyLoadComponent } from 'react-lazy-load-image-component'
 
@@ -48,7 +50,13 @@ export default function Post(props: Props) {
           {createdTime} <div className={style.pointSeperator}></div> {data?.address_place_name}
         </div>
       </div>
-      <div className={style.content}>{data?.short_content}</div>
+      <Link href={`/1_review/${data.uid}`} >
+        <TruncatedText
+          text={data?.short_content}
+          maxLength={100}
+          class={style.content}
+        />
+      </Link>
       <div className={style.videoContainer}>
         <LazyLoadComponent>
           <VideoPlayer videoUrl={videoUrl} thumbnailImg={thumbnailImg} />

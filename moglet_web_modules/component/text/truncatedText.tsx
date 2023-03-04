@@ -1,18 +1,17 @@
-import style from '../../style/component/text/truncatedText.module.css'
-
 interface props {
   text: string,
   maxLength: number
+  class: string
 }
 
-function TruncatedText({ text, maxLength }: props) {
+function TruncatedText({ text, maxLength, class: className }: props) {
   if (text?.length <= maxLength) {
     return <span>{text}</span>;
   }
 
   const truncatedText = text?.slice(0, maxLength) + '...';
 
-  return <span className={style.content} title={text}>{truncatedText}</span>;
+  return <span className={className} title={text}>{truncatedText}</span>;
 }
 
 export default TruncatedText;
