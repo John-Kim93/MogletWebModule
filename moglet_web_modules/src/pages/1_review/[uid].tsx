@@ -9,6 +9,7 @@ import { RestaurantLinkBtn } from "component/button/restaurantLink";
 import { useColorMode } from "@chakra-ui/react";
 import TimeCalculatedText from 'repositories/timeCalculatedText';
 // import TruncatedText from 'component/text/truncatedText';
+import { Review } from 'types/types';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { query } = context;
@@ -30,8 +31,8 @@ export default function WebReview(props :Props) {
   if (colorMode === 'dark') {
     toggleColorMode()
   }
-  const reviewObj = useQuery(['get_review'], () => apiGetReview(props.uid))
-  const review = reviewObj?.data?.data?.item
+  const reviewObj = useQuery('get_review', () => apiGetReview(props.uid))
+  const review: Review = reviewObj?.data?.data?.item
   const createdTime = TimeCalculatedText(review?.created_time)
   const videoUrl:string = review?.filename
   const thumbnailImg = `/convert/${review?.video_thumbnail}`
