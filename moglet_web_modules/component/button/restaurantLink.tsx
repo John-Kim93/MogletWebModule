@@ -1,6 +1,7 @@
 import style from "../../style/component/button/button.module.css"
 import Image from "next/image"
 import Link from "next/link";
+import TruncatedText from "component/text/truncatedText";
 
 interface Props {
   imgSrc: string,
@@ -27,10 +28,10 @@ export function RestaurantLinkBtn(props:Props) {
           />
         </div>
         <div className={style.item}>
-          {props?.storeName}
+          <TruncatedText text={props?.storeName} maxLength={16} />
         </div>
         <div className={style.item}>
-          {props?.storeAddress}
+          <TruncatedText text={props?.storeAddress} maxLength={16} />
         </div>
         <div className={style.item}>
           <Image src="/ArrowForLink.png" alt="arrow" width={5} height={10} />
