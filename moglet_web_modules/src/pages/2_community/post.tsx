@@ -50,12 +50,8 @@ export default function Post(props: Props) {
           {createdTime} <div className={style.pointSeperator}></div> {data?.address_place_name}
         </div>
       </div>
-      <Link href={`/1_review/${data?.uid}`} >
-        <TruncatedText
-          text={data?.short_content}
-          maxLength={100}
-          class={style.content}
-        />
+      <Link href={`/1_review/${data?.uid}`} className={style.item} >
+        <TruncatedText text={data?.short_content} maxLength={100} />
       </Link>
       <div className={style.videoContainer}>
         <LazyLoadComponent>
