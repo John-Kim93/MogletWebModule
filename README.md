@@ -24,6 +24,7 @@
 
 - 가게 이미지 : shop_filename(.jpeg)
 - 가게이름 : name
+- 네이버 url : naver_map_place_id
 
 
 
