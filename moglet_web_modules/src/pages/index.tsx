@@ -14,6 +14,9 @@ export default function Home() {
       <h2>
         <Link href={`/2_community`}>2. 커뮤니티 Post 보러가기</Link>
       </h2>
+      <h2>
+        <Link href={`/4_googleMaps`}>4. 지도 서비스 보러가기</Link>
+      </h2>
     </div>
   )
 }

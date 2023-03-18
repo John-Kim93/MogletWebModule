@@ -34,7 +34,9 @@ export default function WebReview(props :Props) {
   const review: Review = reviewObj?.data?.data?.item
   const createdTime = TimeCalculatedText(review?.created_time)
   const videoUrl:string = review?.filename
-  const thumbnailImg = `/convert/${review?.video_thumbnail}`
+  const thumbnailImg: string = review?.video_thumbnail.includes("Thumbnail")
+  ? `/convert/${review?.video_thumbnail}`
+  : `/original/${review?.video_thumbnail}`
   const imageSrc: string = review?.shop_filename.includes("Thumbnail")
   ? `/convert/${review?.shop_filename}`
   : `/original/${review?.shop_filename}`

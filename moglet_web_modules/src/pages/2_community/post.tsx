@@ -16,7 +16,9 @@ export default function Post(props: Props) {
   const data = props.data
   const createdTime = TimeCalculatedText(data?.created_time)
   const videoUrl:string = data?.filename
-  const thumbnailImg = `/convert/${data?.video_thumbnail}`
+  const thumbnailImg = data?.video_thumbnail.includes("Thumbnail")
+  ? `/convert/${data?.video_thumbnail}`
+  : `/original/${data?.video_thumbnail}`
   const imageSrc: string = data?.shop_filename.includes("Thumbnail")
   ? `/convert/${data?.shop_filename}`
   : `/original/${data?.shop_filename}`

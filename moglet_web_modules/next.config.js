@@ -6,6 +6,7 @@ const nextConfig = {
   env: {
     ORIGINAL_DATA: `https://${process.env.ORIGINAL_DATA}`,
     CONVERT_DATA: `https://${process.env.CONVERT_DATA}`,
+    GOOGLE_MAP_KEY: process.env.GOOGLE_MAP_KEY,
   },
   async rewrites() {
     return [
