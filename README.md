@@ -1,6 +1,18 @@
 # 머글래 웹 모듈 제작 Repo입니다.
 
+#### version 관리
+
+1.0.0 - 중대한 변화가 있는 경우
+1.1.0 - 고도화 작업 완료 시
+1.1.1 - 유의미한 기능 변화가 있을 시
+
+버그 수정은 version_hotfix로 간단하게 처리
+초기 버전 기능 추가에 따른 버전 업그레이드는 불필요
+
+
+
 ### 1. 머글래 리뷰 영상 공유하기
+
 [GET] /api/public/business/shop/video/info
 
 - 만족도 : visit_satisfaction
