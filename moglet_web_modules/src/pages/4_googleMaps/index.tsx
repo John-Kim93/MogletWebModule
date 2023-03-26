@@ -1,33 +1,21 @@
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ReviewTable from './reviewTable';
 import style from "./googleMaps.module.css"
+import { useQuery } from 'react-query';
+import { Marker as MarkerInfo } from 'types/types';
+import { apiGetMarkers, apiGetReviewTable } from '@/serverApi/4_googleMaps/api';
 
 const KEY :string = process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY ? process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY : "NULL" 
 
-type MarkerInfo = {
-  lat: number;
-  lng: number;
-  name: string;
-  uid: number;
-}
-
-const markers: MarkerInfo[] = [
-  {
-    lat: 37.5614677,
-    lng: 126.9857406,
-    name: '쏠라운지 위드 그레이프',
-    uid: 1
-  },
-  {
-    lat: 37.5736565,
-    lng: 126.9742286,
-    name: "오늘은즉떡 광화문점",
-    uid : 100 
-  },
-];
-
 export default function GoogleMaps() {
+  const markers = useQuery('markers', ()=>apiGetMarkers({
+    lat: 37.536977,
+    lng: 126.955242,
+    km: km,
+    offset: 0
+  }))
+  
   const map = useRef<GoogleMap>(null)
   const [popup, setPopup] = useState(false)
   const [reviewUid, setReviewUid] = useState(0)
@@ -35,6 +23,10 @@ export default function GoogleMaps() {
     lat: 37.5662952,
     lng: 126.9779451
   })
+  const [zoom, setzoom] = useState(15)
+  const [km, setKm] = useState(3)
+
+  const reviewTableRet = useQuery(['review_table', reviewUid], ()=>apiGetReviewTable(reviewUid))?.data?.data?.item
 
   const handlingDragEnd = () => {
     if (map.current) {
@@ -44,11 +36,24 @@ export default function GoogleMaps() {
       // setPopup(false)
     }
   }
+
+  const handlingZoomChange = () => {
+    if (map.current) {
+      const newZoom = map.current?.state?.map?.getZoom()
+      if (newZoom) setzoom(newZoom)
+    }
+  }
+  
   const clickMarker = (uid: number, lat: number, lng: number) => {
     setPopup(true)
     setReviewUid(uid)
     setCenter({lat, lng})
   }
+
+  useEffect(()=>{
+    console.log(reviewTableRet)
+    console.log(reviewUid)
+  }, [reviewUid])
 
   return (
     <LoadScript
@@ -59,28 +64,29 @@ export default function GoogleMaps() {
           ref={map}
           mapContainerStyle={{width:"100vw", height:"100vh"}}
           center={center}
-          zoom={15}
+          zoom={zoom}
           options={{
             minZoom: 13,
             disableDefaultUI:true,
           }}
           onDragEnd={handlingDragEnd}
+          onZoomChanged={handlingZoomChange}
           onClick={()=>setPopup(false)}
         >
           { /* Child components, such as markers, info windows, etc. */ }
-          {markers.map((marker: MarkerInfo, index: number) => (
+          {markers?.data?.data?.item.map((marker: MarkerInfo, index: number) => (
             <Marker
               key={index}
-              position={{ lat: marker.lat, lng: marker.lng }}
+              position={{ lat: marker.latitude, lng: marker.longitude }}
               title={marker.name}
               onClick={() => {
-                clickMarker(marker.uid, marker.lat, marker.lng)
+                clickMarker(marker.uid, marker.latitude, marker.longitude)
               }}
             />
           ))}
         </GoogleMap>
       </div>
-      {popup && <ReviewTable close={()=>{setPopup(false)}} reviewUid={reviewUid} />}
+      {popup && <ReviewTable reviewTableRet={reviewTableRet} />}
     </LoadScript>
   )
 }
