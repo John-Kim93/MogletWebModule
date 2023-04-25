@@ -1,5 +1,5 @@
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import { useEffect, useRef, useState } from 'react';
+import { GoogleMap, InfoBox, LoadScript, Marker, MarkerClusterer } from '@react-google-maps/api';
+import { useRef, useState } from 'react';
 import ReviewTable from './reviewTable';
 import style from "./googleMaps.module.css"
 import { useQuery } from 'react-query';
@@ -18,8 +18,9 @@ export default function GoogleMaps() {
   }))
   
   const map = useRef<GoogleMap>(null)
-  const [searchBtnVisible, setsearchBtnVisible] = useState(false)
+  const [searchBtnVisible, setSearchBtnVisible] = useState(false)
   const [popup, setPopup] = useState(false)
+  const [markerPopup, setMarkerPopup] = useState<MarkerInfo | null>(null);
   const [reviewUid, setReviewUid] = useState(0)
   const [center, setCenter] = useState({
     lat: 37.5662952,
@@ -37,10 +38,9 @@ export default function GoogleMaps() {
       const curLng = map.current?.state?.map?.getCenter()?.lng()
       if (curLat && curLng) {
         setCenter({lat: curLat, lng: curLng})
-        setsearchBtnVisible(true)
+        setSearchBtnVisible(true)
       }
       if (zoomLv) {
-        console.log(zoomLv)
         if (zoomLv < 14) {
           setKm(3)
         } else if (zoomLv < 16) {
@@ -53,11 +53,15 @@ export default function GoogleMaps() {
       }
     }
   }
-
+  
   const handlingZoomChange = () => {
     if (map.current) {
       const newZoom = map.current?.state?.map?.getZoom()
-      if (newZoom) setzoom(newZoom)
+      if (newZoom) {
+        setzoom(newZoom)
+        setSearchBtnVisible(true)
+        setMarkerPopup(null)
+      }
     }
   }
   
@@ -69,7 +73,7 @@ export default function GoogleMaps() {
 
   const refetchMarkers = ():void => {
     markers.refetch()
-    setsearchBtnVisible(false)
+    setSearchBtnVisible(false)
   }
 
   return (
@@ -85,22 +89,73 @@ export default function GoogleMaps() {
           options={{
             minZoom: 13,
             disableDefaultUI:true,
+            styles: [{
+              featureType: "poi",
+              elementType: "labels",
+              stylers: [{ visibility: "off" }],
+            }]
           }}
           onDragEnd={handlingDragEnd}
           onZoomChanged={handlingZoomChange}
-          onClick={()=>setPopup(false)}
+          onClick={()=>{
+            setMarkerPopup(null)
+            setPopup(false)
+          }}
         >
           { /* Child components, such as markers, info windows, etc. */ }
-          {markers?.data?.data?.item.map((marker: MarkerInfo, index: number) => (
-            <Marker
-              key={index}
-              position={{ lat: marker.latitude, lng: marker.longitude }}
-              title={marker.name}
-              onClick={() => {
-                clickMarker(marker.uid, marker.latitude, marker.longitude)
+          <MarkerClusterer
+            averageCenter={false}
+            imageExtension={'png'}
+            imagePath={'/marker.png'}
+            enableRetinaIcons={true}
+            styles={[
+              {
+                anchorText: [-30, 0],
+                textColor: "#000",
+                url: '/marker.png',
+                width: 34,
+                height: 42,
+                textSize: 16
+              }
+            ]}
+          >
+            {(clusterer) =>
+              markers?.data?.data?.item.map((marker: MarkerInfo, index: number) => (
+                <Marker
+                  key={index}
+                  position={{ lat: marker.latitude, lng: marker.longitude }}
+                  title={marker.name}
+                  onClick={() => {
+                    clickMarker(marker.business_shop_uid, marker.latitude, marker.longitude)
+                  }}
+                  onMouseOver={() => {
+                    setMarkerPopup(marker)
+                  }}
+                  icon={'/marker.png'}
+                  clusterer={clusterer}
+                />
+            ))}
+          </MarkerClusterer>
+          {markerPopup && 
+            <InfoBox
+              position={new google.maps.LatLng(markerPopup.latitude, markerPopup.longitude)}
+              options={{
+                alignBottom: true,
+                pixelOffset: new google.maps.Size(-80, -44),
+                closeBoxURL: ``,
+                isHidden: false,
+                maxWidth: 3000,
+                disableAutoPan: true,
+                enableEventPropagation:true,
+                infoBoxClearance: new google.maps.Size(1, 1),
               }}
-            />
-          ))}
+
+            >
+              <div className={style.shopNameContainer}>
+                <p>{markerPopup.name}</p>
+              </div>
+            </InfoBox>
+          }
           {searchBtnVisible && <SearchBtn click={refetchMarkers} />}
         </GoogleMap>
       </div>

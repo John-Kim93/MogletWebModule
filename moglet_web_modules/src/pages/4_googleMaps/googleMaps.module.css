@@ -28,3 +28,20 @@
 
 .contentContainer{
 }
+.shopNameContainer{
+  background-color: #fff;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px 0px rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  white-space: nowrap;
+  width: auto;
+  display: block;
+  overflow-x: hidden;
+  width: 10rem;
+  text-align: center;
+}
+.shopNameContainer p{
+  font-size: 12px; font-weight: bold;
+  color: #717171;
+}
