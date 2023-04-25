@@ -18,5 +18,5 @@ export interface Marker {
   latitude: number,
   longitude: number,
   name: string,
-  uid: number
+  business_shop_uid: number
 }
