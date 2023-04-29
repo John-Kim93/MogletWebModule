@@ -11,27 +11,8 @@ import MoreBtn from 'component/button/moreBtn';
 const KEY :string = process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY ? process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY : "NULL" 
 
 export default function GoogleMaps() {
-  // markers = { data, fetchNextPage, hasNextPage, status, remove, refetch }
-  const markers = useInfiniteQuery(['markers'], ({ pageParam = 0 }) => apiGetMarkers({
-    lat: center.lat,
-    lng: center.lng,
-    km: km,
-    offset: pageParam
-  }), {
-    getNextPageParam: (lastPage, allPages) => {
-      return allPages.length * 12
-    }
-  })
-
-  const [markerList, setMarkerList] = useState(markers.data?.pages[0].data.item)
-  useEffect( () => {
-    if (!markerList) {
-      setMarkerList(markers.data?.pages[0].data.item)
-      markers.fetchNextPage()
-    }
-  }, [markers])
-  
   const map = useRef<GoogleMap>(null)
+  const [BtnVisible, setBtnVisible] = useState(false)
   const [searchBtnVisible, setSearchBtnVisible] = useState(false)
   const [popup, setPopup] = useState(false)
   const [markerPopup, setMarkerPopup] = useState<MarkerInfo | null>(null);
@@ -42,6 +23,33 @@ export default function GoogleMaps() {
   })
   const [zoom, setzoom] = useState(15)
   const [km, setKm] = useState(1)
+  const [markerList, setMarkerList] = useState<MarkerInfo[]>([])
+  
+  const markers = useInfiniteQuery(['markers'], ({ pageParam = 0 }) => apiGetMarkers({
+    lat: center.lat,
+    lng: center.lng,
+    km: km,
+    offset: pageParam
+  }), {
+    onSuccess: data => {
+      setBtnVisible(true)
+      if (data.pages.length == 1) {
+        setMarkerList(data?.pages[0].data.item)
+        markers.fetchNextPage()
+      }
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.config.params.offset == 60 || lastPage.data.item.length == 0) {
+        if (!searchBtnVisible) {
+          setSearchBtnVisible(true)
+        }
+        return undefined
+      }
+      if (lastPage.statusText == "OK") {
+        return (lastPage.config.params.offset + 12)
+      }
+    },
+  })
 
   const reviewTableRet = useQuery(['review_table', reviewUid], ()=>apiGetReviewTable(reviewUid))?.data?.data?.item
 
@@ -88,18 +96,20 @@ export default function GoogleMaps() {
   }
 
   const refetchMarkers = ():void => {
-    console.log("here")
     markers.remove()
     markers.refetch()
+    setMarkerList([])
     setMarkerPopup(null)
+    setBtnVisible(false)
     setSearchBtnVisible(false)
   }
 
   const addMarkers = ():void => {
-    if (markers.status == "success") {
+    if (markers.status == "success" && markers.hasNextPage && markerList) {
       markers.fetchNextPage()
       setMarkerList(markerList.concat(markers.data.pages[markers.data.pages.length - 1].data.item))
       setMarkerPopup(null)
+      setBtnVisible(false)
     }
   }
 
@@ -130,7 +140,7 @@ export default function GoogleMaps() {
           }}
         >
           { /* Child components, such as markers, info windows, etc. */ }
-          {markerList 
+          {markerList.length > 0
           ? <MarkerClusterer
               averageCenter={false}
               imageExtension={'png'}
@@ -149,25 +159,29 @@ export default function GoogleMaps() {
               maxZoom={16}
               gridSize={20}
             >
-              {(clusterer) =>
-                markerList.map((marker: MarkerInfo, index: number) => (
-                  <Marker
-                    key={index}
-                    position={{ lat: marker.latitude, lng: marker.longitude }}
-                    title={marker.name}
-                    onClick={() => {
-                      clickMarker(marker.business_shop_uid, marker.latitude, marker.longitude)
-                    }}
-                    onMouseOver={() => {
-                      setMarkerPopup(marker)
-                    }}
-                    icon={'/marker.png'}
-                    clusterer={clusterer}
-                  />
-              ))}
+              {(clusterer) => {
+                return(
+                  <>
+                    {markerList.map((marker: MarkerInfo, index: number) => 
+                      <Marker
+                        key={index}
+                        position={{ lat: marker.latitude, lng: marker.longitude }}
+                        title={marker.name}
+                        onClick={() => {
+                          clickMarker(marker.business_shop_uid, marker.latitude, marker.longitude)
+                        }}
+                        onMouseOver={() => {
+                          setMarkerPopup(marker)
+                        }}
+                        icon={'/marker.png'}
+                        clusterer={clusterer}
+                      />
+                    )}
+                  </>
+                )
+              }}
             </MarkerClusterer>
-          : null
-          }
+          : null}
           
           {markerPopup && 
             <InfoBox
@@ -189,9 +203,12 @@ export default function GoogleMaps() {
               </div>
             </InfoBox>
           }
-          {searchBtnVisible
-          ? <SearchBtn click={refetchMarkers} />
-          : <MoreBtn click={addMarkers} />}
+          {BtnVisible
+          ? searchBtnVisible
+            ? <SearchBtn click={refetchMarkers} />
+            : <MoreBtn click={addMarkers} />
+          : null}
+          
         </GoogleMap>
       </div>
       {popup && <ReviewTable reviewTableRet={reviewTableRet} />}
