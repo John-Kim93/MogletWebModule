@@ -35,8 +35,12 @@ export default function GoogleMaps() {
       setBtnVisible(true)
       if (data.pages.length == 1) {
         setMarkerList(data?.pages[0].data.item)
-        markers.fetchNextPage()
+      } else {
+        setMarkerList(markerList.concat(data.pages[data.pages.length - 1].data.item))
       }
+    },
+    onError: err => {
+      console.log(err, "error on infinite queries")
     },
     getNextPageParam: (lastPage, allPages) => {
       if (lastPage.config.params.offset == 60 || lastPage.data.item.length == 0) {
@@ -45,14 +49,16 @@ export default function GoogleMaps() {
         }
         return undefined
       }
-      if (lastPage.statusText == "OK") {
-        return (lastPage.config.params.offset + 12)
-      }
+      return (lastPage.config.params.offset + 12)
     },
+    retry: false,
+    staleTime: 1 * 60,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   })
 
   const reviewTableRet = useQuery(['review_table', reviewUid], ()=>apiGetReviewTable(reviewUid))?.data?.data?.item
-
+  
   const handlingDragEnd = () => {
     if (map.current) {
       const zoomLv = map.current?.state?.map?.getZoom()
@@ -94,7 +100,7 @@ export default function GoogleMaps() {
     setReviewUid(uid)
     setCenter({lat, lng})
   }
-
+  
   const refetchMarkers = ():void => {
     markers.remove()
     markers.refetch()
@@ -103,19 +109,17 @@ export default function GoogleMaps() {
     setBtnVisible(false)
     setSearchBtnVisible(false)
   }
-
+  
   const addMarkers = ():void => {
     if (markers.status == "success" && markers.hasNextPage && markerList) {
       markers.fetchNextPage()
-      setMarkerList(markerList.concat(markers.data.pages[markers.data.pages.length - 1].data.item))
       setMarkerPopup(null)
       setBtnVisible(false)
     }
   }
-
   return (
     <LoadScript
-      googleMapsApiKey={KEY}
+    googleMapsApiKey={KEY}
     >
       <div className={style.overlay}>
         <GoogleMap
