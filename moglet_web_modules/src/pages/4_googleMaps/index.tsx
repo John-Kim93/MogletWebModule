@@ -44,9 +44,6 @@ export default function GoogleMaps() {
     onError: err => {
       console.log(err, "error on infinite queries")
     },
-    onError: err => {
-      console.log(err, "error on infinite queries")
-    },
     getNextPageParam: (lastPage, allPages) => {
       if (lastPage.config.params.offset == 60 || lastPage.data.item.length == 0) {
         if (!searchBtnVisible) {
