@@ -36,6 +36,8 @@ export default function GoogleMaps() {
       setBtnVisible(true)
       if (data.pages.length == 1) {
         setMarkerList(data?.pages[0].data.item)
+      } else {
+        setMarkerList(markerList.concat(data.pages[data.pages.length - 1].data.item))
       }
       console.log("onSuccess")
     },
@@ -49,10 +51,7 @@ export default function GoogleMaps() {
         }
         return undefined
       }
-      if (pageLengthChecker != allPages.length) {
-        setPageLengthChecker(allPages.length)
-        return (lastPage.config.params.offset + 12)
-      }
+      return (lastPage.config.params.offset + 12)
     },
     retry: false,
     staleTime: 1 * 60,
@@ -120,15 +119,11 @@ export default function GoogleMaps() {
   const addMarkers = ():void => {
     console.log("addMarkers")
     if (markers.status == "success" && markers.hasNextPage && markerList) {
-      const res = markers.fetchNextPage()
-      res.then( () => {
-        setMarkerList(markerList.concat(markers.data.pages[markers.data.pages.length - 1].data.item))
-      })
+      markers.fetchNextPage()
       setMarkerPopup(null)
       setBtnVisible(false)
     }
   }
-  
   return (
     <LoadScript
     googleMapsApiKey={KEY}
