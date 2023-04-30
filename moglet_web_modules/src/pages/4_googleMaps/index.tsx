@@ -24,7 +24,6 @@ export default function GoogleMaps() {
   const [zoom, setzoom] = useState(15)
   const [km, setKm] = useState(1)
   const [markerList, setMarkerList] = useState<MarkerInfo[]>([])
-  const [pageLengthChecker, setPageLengthChecker] = useState(0)
   
   const markers = useInfiniteQuery(['markers'], ({ pageParam = 0 }) => apiGetMarkers({
     lat: center.lat,
@@ -39,7 +38,6 @@ export default function GoogleMaps() {
       } else {
         setMarkerList(markerList.concat(data.pages[data.pages.length - 1].data.item))
       }
-      console.log("onSuccess")
     },
     onError: err => {
       console.log(err, "error on infinite queries")
@@ -62,7 +60,6 @@ export default function GoogleMaps() {
   const reviewTableRet = useQuery(['review_table', reviewUid], ()=>apiGetReviewTable(reviewUid))?.data?.data?.item
   
   const handlingDragEnd = () => {
-    console.log("handlingDragEnd")
     if (map.current) {
       const zoomLv = map.current?.state?.map?.getZoom()
       const curLat = map.current?.state?.map?.getCenter()?.lat()
@@ -87,7 +84,6 @@ export default function GoogleMaps() {
   }
   
   const handlingZoomChange = () => {
-    console.log("handlingZoomChange")
     if (map.current) {
       const newZoom = map.current?.state?.map?.getZoom()
       if (newZoom) {
@@ -99,7 +95,6 @@ export default function GoogleMaps() {
   }
   
   const clickMarker = (uid: number, lat: number, lng: number) => {
-    console.log("clickMarker")
     setMarkerPopup(null)
     setPopup(true)
     setReviewUid(uid)
@@ -107,7 +102,6 @@ export default function GoogleMaps() {
   }
   
   const refetchMarkers = ():void => {
-    console.log("refetchMarkers")
     markers.remove()
     markers.refetch()
     setMarkerList([])
@@ -117,7 +111,6 @@ export default function GoogleMaps() {
   }
   
   const addMarkers = ():void => {
-    console.log("addMarkers")
     if (markers.status == "success" && markers.hasNextPage && markerList) {
       markers.fetchNextPage()
       setMarkerPopup(null)
