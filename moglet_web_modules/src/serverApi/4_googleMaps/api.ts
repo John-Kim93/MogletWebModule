@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 export const apiGetReviewTable = (reviewUid :number) =>
-	axios({
+	{
+		return axios({
 		method: 'get',
 		url: '/api/public/home/review/list',
     params: {
@@ -11,7 +12,7 @@ export const apiGetReviewTable = (reviewUid :number) =>
 			is_filter: 0,
 			offset: 0
 		}
-	})
+	})}
 
 interface MarkerReq {
 	lat: number,
@@ -20,8 +21,7 @@ interface MarkerReq {
 	offset: number
 }
 
-export const apiGetMarkers = (req: MarkerReq) => 
-	axios({
+export const apiGetMarkers = (req: MarkerReq) => axios({
 		method: 'get',
 		url: '/api/public/home/shop/list',
 		params: {

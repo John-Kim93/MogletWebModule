@@ -1,56 +1,54 @@
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ReviewTable from './reviewTable';
 import style from "./googleMaps.module.css"
-import { useQuery } from 'react-query';
-import { apiGetReviewTable } from '@/serverApi/4_googleMaps/api';
 import Markers from './markers';
+import { closeMarkerInfo, duToDdoBtn } from '../../store/4_GoogleMapsStore/markerSlice'
+import { setCenter, setKm } from '../../store/4_GoogleMapsStore/mapSlice'
+import { hideReviewTable } from '../../store/4_GoogleMapsStore/reviewTableSlice'
+
 import { GMapState } from '../../../types/4_GoogleMapsTypes/mapType';
+import { ReviewState } from 'types/4_GoogleMapsTypes/reviewType';
+
 
 const KEY :string = process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY ? process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY : "NULL" 
 
 export default function GoogleMaps() {
+  const mapInfo = useSelector((state: GMapState) => state.mapSlice)
+  const reviewInfo = useSelector((state: ReviewState) => state.reviewTableSlice)
+  const dispatch = useDispatch()
+  
   const map = useRef<GoogleMap>(null)
-  const mapInfo = useSelector((state: GMapState) => state.mapSlice);
-  console.log(mapInfo)
-  const [popup, setPopup] = useState(false)
-  const [reviewUid, setReviewUid] = useState(0)
+
+  const handlingDragEnd = () => {
+    if (map.current) {
+      const curLat = map.current?.state?.map?.getCenter()?.lat()
+      const curLng = map.current?.state?.map?.getCenter()?.lng()
+      dispatch(closeMarkerInfo())
+      if (curLat && curLng) {
+        dispatch(setCenter({lat: curLat, lng: curLng}))
+        dispatch(duToDdoBtn())
+      }
+    }
+  }
   
-  // const handlingDragEnd = () => {
-  //   if (map.current) {
-  //     const zoomLv = map.current?.state?.map?.getZoom()
-  //     const curLat = map.current?.state?.map?.getCenter()?.lat()
-  //     const curLng = map.current?.state?.map?.getCenter()?.lng()
-  //     setMarkerPopup(null)
-  //     if (curLat && curLng) {
-  //       setCenter({lat: curLat, lng: curLng})
-  //       setSearchBtnVisible(true)
-  //     }
-  //     if (zoomLv) {
-  //       if (zoomLv < 14) {
-  //         setKm(3)
-  //       } else if (zoomLv < 16) {
-  //         setKm(1)
-  //       } else if (zoomLv < 17) {
-  //         setKm(0.3)
-  //       } else if (zoomLv >= 18) {
-  //         setKm(0.1)
-  //       }
-  //     }
-  //   }
-  // }
-  
-  // const handlingZoomChange = () => {
-  //   if (map.current) {
-  //     const newZoom = map.current?.state?.map?.getZoom()
-  //     if (newZoom) {
-  //       setzoom(newZoom)
-  //       setSearchBtnVisible(true)
-  //       setMarkerPopup(null)
-  //     }
-  //   }
-  // }
+  const handlingZoomChange = () => {
+    if (map.current) {
+      const zoomLv = map.current?.state?.map?.getZoom()
+      if (zoomLv) {
+        if (zoomLv < 16) {
+          dispatch(setKm(1))
+        } else if (zoomLv < 17) {
+          dispatch(setKm(0.5))
+        } else if (zoomLv >= 18) {
+          dispatch(setKm(0.3))
+        }
+        dispatch(duToDdoBtn())
+        dispatch(closeMarkerInfo())
+      }
+    }
+  }
 
   return (
     <LoadScript
@@ -60,7 +58,7 @@ export default function GoogleMaps() {
         <GoogleMap
           ref={map}
           mapContainerStyle={{width:"100vw", height:"100vh"}}
-          center={{lat: 37.5662952, lng: 126.9779451}}
+          center={mapInfo.center}
           zoom={15}
           options={{
             minZoom: 13,
@@ -71,18 +69,17 @@ export default function GoogleMaps() {
               stylers: [{ visibility: "off" }],
             }]
           }}
-          // onDragEnd={handlingDragEnd}
-          // onZoomChanged={handlingZoomChange}
-          // onClick={()=>{
-          //   setMarkerPopup(null)
-          //   setPopup(false)
-          // }}
+          onDragEnd={handlingDragEnd}
+          onZoomChanged={handlingZoomChange}
+          onClick={()=>{
+            dispatch(closeMarkerInfo())
+            dispatch(hideReviewTable())
+          }}
         >
-          { /* Child components, such as markers, info windows, etc. */ }
           <Markers />
         </GoogleMap>
       </div>
-      {/* {popup && <ReviewTable reviewTableRet={reviewTableRet} />} */}
+      {reviewInfo && reviewInfo.reviewTableVisibility && <ReviewTable />}
     </LoadScript>
   )
 }

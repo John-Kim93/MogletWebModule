@@ -2,21 +2,22 @@ import style from "./googleMaps.module.css"
 import { useColorMode } from "@chakra-ui/react";
 import { Review as ReviewType } from "types/types";
 import { useQuery } from "react-query";
+import { useSelector } from 'react-redux';
+
 import { apiGetReviewTable } from "@/serverApi/4_googleMaps/api";
+import { ReviewState } from 'types/4_GoogleMapsTypes/reviewType';
+
 import Post from '../2_community/post';
 
-interface Props {
-  reviewUid: number
-}
-
-export default function ReviewTable({reviewUid}: Props) {
-  // dark mode
+export default function ReviewTable() {
   const { colorMode, toggleColorMode } = useColorMode();
   if (colorMode === 'dark') {
     toggleColorMode()
   }
 
-  const reviewTableRet = useQuery(['review_table', reviewUid], ()=>apiGetReviewTable(reviewUid))?.data?.data?.item
+  const reviewInfo = useSelector((state: ReviewState) => state.reviewTableSlice)
+
+  const reviewTableRet = useQuery(['review_table', reviewInfo.reviewUid], ()=>apiGetReviewTable(reviewInfo.reviewUid))?.data?.data?.item
 
   return(
     <div className={style.wrapper}>

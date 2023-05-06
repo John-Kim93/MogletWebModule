@@ -8,6 +8,8 @@ export interface Marker {
 export interface MarkerState {
   markerSlice: {
     markerList: Marker[],
-    selectedMarker: Marker | null,
+    markerInfo: Marker | null,
+    buttonSelector: string,
+    buttonVisibility: boolean,
   }
 }
