@@ -36,13 +36,16 @@ export default function GoogleMaps() {
   const handlingZoomChange = () => {
     if (map.current) {
       const zoomLv = map.current?.state?.map?.getZoom()
+      console.log(zoomLv)
       if (zoomLv) {
-        if (zoomLv < 16) {
-          dispatch(setKm(1))
+        if (zoomLv < 15) {
+          dispatch(setKm(3))
         } else if (zoomLv < 17) {
-          dispatch(setKm(0.5))
-        } else if (zoomLv >= 18) {
+          dispatch(setKm(1))
+        } else if (zoomLv < 18) {
           dispatch(setKm(0.3))
+        } else if (zoomLv >= 18) {
+          dispatch(setKm(0.1))
         }
         dispatch(duToDdoBtn())
         dispatch(closeMarkerInfo())
