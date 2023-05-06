@@ -2,6 +2,7 @@
 const nextConfig = {
   experimental: {
     appDir: true,
+    forceSwcTransforms: true,
   },
   env: {
     ORIGINAL_DATA: `https://${process.env.ORIGINAL_DATA}`,
