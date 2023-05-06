@@ -6,8 +6,8 @@ export const markerSlice = createSlice({
   initialState: {
     markerList: [],
     markerInfo: null,
-    buttonSelector: "ddo",
-    buttonVisibility: true,
+    buttonSelector: "du",
+    buttonVisibility: false,
   },
   reducers: {
     closeMarkerInfo: state => {
