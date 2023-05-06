@@ -6,14 +6,17 @@ import { apiGetReviewTable } from "@/serverApi/4_googleMaps/api";
 import Post from '../2_community/post';
 
 interface Props {
-  reviewTableRet: ReviewType[] | undefined,
+  reviewUid: number
 }
 
-export default function ReviewTable({reviewTableRet} :Props) {
+export default function ReviewTable({reviewUid}: Props) {
+  // dark mode
   const { colorMode, toggleColorMode } = useColorMode();
   if (colorMode === 'dark') {
     toggleColorMode()
   }
+
+  const reviewTableRet = useQuery(['review_table', reviewUid], ()=>apiGetReviewTable(reviewUid))?.data?.data?.item
 
   return(
     <div className={style.wrapper}>
