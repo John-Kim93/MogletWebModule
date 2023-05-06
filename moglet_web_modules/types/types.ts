@@ -12,11 +12,3 @@ export interface Review {
   name: string,
   naver_map_place_id: string,
 }
-
-
-export interface Marker {
-  latitude: number,
-  longitude: number,
-  name: string,
-  business_shop_uid: number
-}

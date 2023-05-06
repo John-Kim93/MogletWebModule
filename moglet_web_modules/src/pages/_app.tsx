@@ -8,6 +8,8 @@ import {
 import './globals.css'
 import React from "react"
 import { ThemeProvider, ColorModeProvider } from "@chakra-ui/react"
+import { Provider } from "react-redux";
+import { store } from "../store/store";
 
 export default function App({ Component, pageProps} :AppProps ) {
   // Create a react query client
@@ -24,10 +26,12 @@ export default function App({ Component, pageProps} :AppProps ) {
   return (
     <ColorModeProvider>
       <QueryClientProvider client={queryClient}>
-        <Head>
-          <title>Moglet Web Module</title>
-        </Head>
-        <Component {...pageProps} />
+        <Provider store={store}>
+          <Head>
+            <title>Moglet Web Module</title>
+          </Head>
+          <Component {...pageProps} />
+        </Provider>
       </QueryClientProvider>
     </ColorModeProvider>
   );
